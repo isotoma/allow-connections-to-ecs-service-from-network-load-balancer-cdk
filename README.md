@@ -1,0 +1,1 @@
+# allow-connections-to-ecs-service-from-network-load-balancer-cdk

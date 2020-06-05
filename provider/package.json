@@ -1,0 +1,17 @@
+{
+  "name": "allow-connections-to-ecs-service-from-network-load-balancer-provider",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Isotoma Limited",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@types/node": "^14.0.10"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.689.0"
+  }
+}

@@ -43,13 +43,15 @@ export class AllowConnectionsToECSServiceFromNetworkLoadBalancerProvider extends
 export class AllowConnectionsToECSServiceFromNetworkLoadBalancerProps {
     readonly service: ecs.Ec2Service;
     readonly loadBalancer: elbv2.NetworkLoadBalancer;
-    readonly port: number;
+    readonly fromPort: number;
+    readonly toPort: number;
 }
 
 export class AllowConnectionsToECSServiceFromNetworkLoadBalancer extends cdk.Construct {
     public readonly service: ecs.Ec2Service;
     public readonly loadBalancer: elbv2.NetworkLoadBalancer;
-    public readonly port: number;
+    public readonly fromPort: number;
+    public readonly toPort: number;
     private resource: cfn.CustomResource;
 
     constructor(scope: cdk.Construct, id: string, props: AllowConnectionsToECSServiceFromNetworkLoadBalancerProps) {
@@ -60,19 +62,25 @@ export class AllowConnectionsToECSServiceFromNetworkLoadBalancer extends cdk.Con
         if (!props.loadBalancer) {
             throw new Error("No load balancer specified");
         }
-        if (!props.port) {
-            throw new Error("No port specified");
+        if (!props.fromPort) {
+            throw new Error("No fromPort specified");
         }
+        if (!props.toPort) {
+            throw new Error("No toPort specified");
+        }
+
         this.service = props.service;
         this.loadBalancer = props.loadBalancer;
-        this.port = props.port;
+        this.fromPort = props.fromPort;
+        this.toPort = props.toPort;
         this.resource = new cfn.CustomResource(this, 'Resource', {
             provider: AllowConnectionsToECSServiceFromNetworkLoadBalancerProvider.getOrCreate(this),
             resourceType: 'Custom::AllowConnectionsToECSServiceFromNetworkLoadBalancer',
             properties: {
                 ServiceSecurityGroupId: this.service.connections.securityGroups[0].securityGroupId,
                 LoadBalancerArn: this.loadBalancer.loadBalancerArn,
-                Port: this.port,
+                FromPort: this.fromPort,
+                ToPort: this.toPort,
             }
         });
     }

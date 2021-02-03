@@ -20,25 +20,30 @@ I mean, what.
 
 Add this resource after you have added the target:
 
-    new AllowConnectionsToECSServiceFromNetworkLoadBalancer(stack, 'AllowServiceFromNLB', {
-        service,
-        port: 80,
-        loadBalancer: nlb,
-    });
+```js
+new AllowConnectionsToECSServiceFromNetworkLoadBalancer(stack, 'AllowServiceFromNLB', {
+    service,
+    fromPort: 80,
+    toPort: 8000,
+    loadBalancer: nlb,
+});
+```
 
 For example:
 
-    const listener = nlb.addListener('Listener', {
-        port: 443,
-        certificates: [ListenerCertificate.fromCertificateManager(certificate)],
-    });
-    listener.addTargets(serviceName, {
-        port: 80,
-        targets: [service],
-    });
-    new AllowConnectionsToECSServiceFromNetworkLoadBalancer(stack, 'AllowServiceFromNLB', {
-        service,
-        port: 80,
-        loadBalancer: nlb,
-    });
-
+```js
+const listener = nlb.addListener('Listener', {
+    port: 443,
+    certificates: [ListenerCertificate.fromCertificateManager(certificate)],
+});
+listener.addTargets(serviceName, {
+    port: 80,
+    targets: [service],
+});
+new AllowConnectionsToECSServiceFromNetworkLoadBalancer(stack, 'AllowServiceFromNLB', {
+    service,
+    fromPort: 80,
+    toPort: 8000,
+    loadBalancer: nlb,
+});
+```

@@ -1,5 +1,11 @@
 ### Changelog
 
+#### [1.2.0](https://github.com/isotoma/allow-connections-to-ecs-service-from-network-load-balancer-cdk/compare/1.1.0...1.2.0)
+
+> 1 November 2022
+
+- Use node 14 [`#18`](https://github.com/isotoma/allow-connections-to-ecs-service-from-network-load-balancer-cdk/pull/18)
+
 #### 1.1.0
 
 > 1 November 2022

@@ -16,7 +16,7 @@ export class AllowConnectionsToECSServiceFromNetworkLoadBalancerProvider extends
         const x = (stack.node.tryFindChild(id) as AllowConnectionsToECSServiceFromNetworkLoadBalancerProvider) || new AllowConnectionsToECSServiceFromNetworkLoadBalancerProvider(stack, id);
         return x.provider;
     }
-    
+
     constructor(scope: cdk.Construct, id: string) {
         super(scope, id);
         this.provider = new customResource.Provider(this, 'allow-connections-to-ecs-service-from-network-load-balancer', {
@@ -28,11 +28,7 @@ export class AllowConnectionsToECSServiceFromNetworkLoadBalancerProvider extends
                 initialPolicy: [
                     new iam.PolicyStatement({
                         resources: ['*'],
-                        actions: [
-                            'ec2:AuthorizeSecurityGroupIngress',
-                            'ec2:RevokeSecurityGroupIngress',
-                            'ec2:DescribeNetworkInterfaces',
-                        ],
+                        actions: ['ec2:AuthorizeSecurityGroupIngress', 'ec2:RevokeSecurityGroupIngress', 'ec2:DescribeNetworkInterfaces'],
                     }),
                 ],
             }),
@@ -56,7 +52,7 @@ export class AllowConnectionsToECSServiceFromNetworkLoadBalancer extends cdk.Con
             throw new Error('No service specified');
         }
         if (!props.loadBalancer) {
-            throw new Error("No load balancer specified");
+            throw new Error('No load balancer specified');
         }
         this.service = props.service;
         this.loadBalancer = props.loadBalancer;
@@ -66,7 +62,7 @@ export class AllowConnectionsToECSServiceFromNetworkLoadBalancer extends cdk.Con
             properties: {
                 ServiceSecurityGroupId: this.service.connections.securityGroups[0].securityGroupId,
                 LoadBalancerArn: this.loadBalancer.loadBalancerArn,
-            }
+            },
         });
     }
 }

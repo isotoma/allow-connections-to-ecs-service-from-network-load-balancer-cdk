@@ -2,10 +2,16 @@
   "name": "allow-connections-to-ecs-service-from-network-load-balancer-cdk",
   "version": "1.0.10",
   "description": "Configure an ECS Service security group to allow connections from a network load balancer",
-  "main": "lib/index.js",
   "scripts": {
-    "build": "tsc && cd provider && tsc && cp -r node_modules ../lib/provider && rm -rf ../lib/provider/node_modules/aws-sdk",
-    "test": "jest"
+    "test": "jest",
+    "tsc": "tsc",
+    "clean": "rm -rf build/",
+    "compile": "npm run clean && npm run -- tsc --outDir build/ && (cd provider && npm ci && npm run compile) && cp -R ./provider/build/ ./build/provider/ && cp package.json README.md ./build/",
+    "version": "auto-changelog --template ./changelog_template.hbs -p && git add CHANGELOG.md",
+    "lint": "eslint 'index.ts' 'test/**/*.ts' jest.config.js --fix",
+    "lint-check": "eslint 'index.ts' 'test/**/*.ts' jest.config.js --max-warnings 0",
+    "lint-all": "npm run lint && (cd provider && npm run lint)",
+    "lint-check-all": "npm run lint-check && (cd provider && npm run lint-check)"
   },
   "repository": {
     "type": "git",
@@ -24,8 +30,17 @@
     "@aws-cdk/core": "^1.44.0",
     "@aws-cdk/custom-resources": "^1.44.0",
     "@types/aws-lambda": "^8.10.53",
-    "@types/node": "^14.0.10",
+    "@types/node": "^12.0.0",
+    "@types/jest": "^24.0.0",
+    "@typescript-eslint/eslint-plugin": "4.8.2",
+    "@typescript-eslint/parser": "4.8.2",
+    "auto-changelog": "^1.16.2",
+    "eslint": "6.8.0",
+    "eslint-config-prettier": "6.9.0",
+    "eslint-plugin-prettier": "3.1.2",
     "jest": "^26.0.1",
+    "prettier": "1.19.1",
+    "ts-jest": "^26.0.0",
     "typescript": "^3.9.3"
   }
 }

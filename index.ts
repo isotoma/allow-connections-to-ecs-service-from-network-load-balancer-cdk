@@ -43,13 +43,11 @@ export class AllowConnectionsToECSServiceFromNetworkLoadBalancerProvider extends
 export class AllowConnectionsToECSServiceFromNetworkLoadBalancerProps {
     readonly service: ecs.Ec2Service;
     readonly loadBalancer: elbv2.NetworkLoadBalancer;
-    readonly port: number;
 }
 
 export class AllowConnectionsToECSServiceFromNetworkLoadBalancer extends cdk.Construct {
     public readonly service: ecs.Ec2Service;
     public readonly loadBalancer: elbv2.NetworkLoadBalancer;
-    public readonly port: number;
     private resource: cfn.CustomResource;
 
     constructor(scope: cdk.Construct, id: string, props: AllowConnectionsToECSServiceFromNetworkLoadBalancerProps) {
@@ -60,19 +58,14 @@ export class AllowConnectionsToECSServiceFromNetworkLoadBalancer extends cdk.Con
         if (!props.loadBalancer) {
             throw new Error("No load balancer specified");
         }
-        if (!props.port) {
-            throw new Error("No port specified");
-        }
         this.service = props.service;
         this.loadBalancer = props.loadBalancer;
-        this.port = props.port;
         this.resource = new cfn.CustomResource(this, 'Resource', {
             provider: AllowConnectionsToECSServiceFromNetworkLoadBalancerProvider.getOrCreate(this),
             resourceType: 'Custom::AllowConnectionsToECSServiceFromNetworkLoadBalancer',
             properties: {
                 ServiceSecurityGroupId: this.service.connections.securityGroups[0].securityGroupId,
                 LoadBalancerArn: this.loadBalancer.loadBalancerArn,
-                Port: this.port,
             }
         });
     }

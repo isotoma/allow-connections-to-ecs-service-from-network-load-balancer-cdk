@@ -1,6 +1,6 @@
 {
   "name": "allow-connections-to-ecs-service-from-network-load-balancer-cdk",
-  "version": "1.0.7",
+  "version": "1.0.10",
   "description": "Configure an ECS Service security group to allow connections from a network load balancer",
   "main": "lib/index.js",
   "scripts": {

@@ -39,11 +39,11 @@ export const getNLBIpAddresses = async (loadBalancerArn: string): Promise<string
     return [...getIpAddresses(response.NetworkInterfaces)];
 };
 
-export const generateIpPermissions = (ipAddresses: string[], port: string): any => [
+export const generateIpPermissions = (ipAddresses: string[]): any => [
     {
         IpProtocol: 'tcp',
-        FromPort: port,
-        ToPort: port,
+        FromPort: 32768,
+        ToPort: 65535,
         IpRanges: ipAddresses.map((x) => ({
             CidrIp: `${x}/32`,
             Description: `Allow access from Network Load Balancer`,
@@ -54,12 +54,11 @@ export const generateIpPermissions = (ipAddresses: string[], port: string): any 
 export const onCreate = async (event: CloudFormationCustomResourceCreateEvent): Promise<CloudFormationCustomResourceResponse> => {
     const securityGroupId = event.ResourceProperties.ServiceSecurityGroupId;
     const loadBalancerArn = event.ResourceProperties.LoadBalancerArn;
-    const port = event.ResourceProperties.Port;
     const ipAddresses = await getNLBIpAddresses(loadBalancerArn);
     const ec2 = new AWS.EC2();
     await ec2.authorizeSecurityGroupIngress({
         GroupId: securityGroupId,
-        IpPermissions: generateIpPermissions(ipAddresses, port),
+        IpPermissions: generateIpPermissions(ipAddresses),
     }).promise();
     return {
         Status: 'SUCCESS',
@@ -74,12 +73,11 @@ export const onCreate = async (event: CloudFormationCustomResourceCreateEvent): 
 export const onDelete = async (event: CloudFormationCustomResourceDeleteEvent): Promise<CloudFormationCustomResourceResponse> => {
     const securityGroupId = event.ResourceProperties.ServiceSecurityGroupId;
     const loadBalancerArn = event.ResourceProperties.LoadBalancerArn;
-    const port = event.ResourceProperties.Port;
     const ipAddresses = await getNLBIpAddresses(loadBalancerArn);
     const ec2 = new AWS.EC2();
     await ec2.revokeSecurityGroupIngress({
         GroupId: securityGroupId,
-        IpPermissions: generateIpPermissions(ipAddresses, port),
+        IpPermissions: generateIpPermissions(ipAddresses),
     }).promise();
     return {
         Status: 'SUCCESS',

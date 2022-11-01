@@ -2,16 +2,29 @@
   "name": "allow-connections-to-ecs-service-from-network-load-balancer-provider",
   "version": "1.0.0",
   "description": "",
-  "main": "lib/index.js",
   "scripts": {
-    "test": "jest"
+    "tsc": "tsc",
+    "clean": "rm -rf build/",
+    "compile": "npm run clean && npm run -- quick-compile",
+    "quick-compile": "npm run -- tsc --outDir build/ --declaration false",
+    "test": "jest",
+    "lint": "eslint 'index.ts' 'tests/**/*.ts' jest.config.js --fix",
+    "lint-check": "eslint 'index.ts' 'tests/**/*.ts' jest.config.js --max-warnings 0"
   },
   "author": "Isotoma Limited",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@types/node": "^14.0.10"
-  },
-  "dependencies": {
-    "aws-sdk": "^2.689.0"
+    "@types/jest": "~24.0.22",
+    "@typescript-eslint/eslint-plugin": "4.8.2",
+    "@typescript-eslint/parser": "4.8.2",
+    "@types/node": ">=10",
+    "aws-sdk": ">=2",
+    "eslint": "6.8.0",
+    "eslint-config-prettier": "6.9.0",
+    "eslint-plugin-prettier": "3.1.2",
+    "jest": "~24.9.0",
+    "prettier": "1.19.1",
+    "ts-jest": "24.1.0",
+    "typescript": ">=3.0.0"
   }
 }

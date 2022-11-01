@@ -1,10 +1,4 @@
-import {
-    CloudFormationCustomResourceCreateEvent,
-    CloudFormationCustomResourceDeleteEvent,
-    CloudFormationCustomResourceEvent,
-    CloudFormationCustomResourceResponse,
-    CloudFormationCustomResourceUpdateEvent,
-} from 'aws-lambda';
+import { CloudFormationCustomResourceCreateEvent, CloudFormationCustomResourceDeleteEvent, CloudFormationCustomResourceEvent, CloudFormationCustomResourceResponse } from 'aws-lambda';
 import * as AWS from 'aws-sdk';
 
 function* getIpAddresses(networkInterfaces: AWS.EC2.NetworkInterfaceList): Generator<string> {
@@ -39,12 +33,13 @@ export const getNLBIpAddresses = async (loadBalancerArn: string): Promise<string
     return [...getIpAddresses(response.NetworkInterfaces)];
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const generateIpPermissions = (ipAddresses: string[]): any => [
     {
         IpProtocol: 'tcp',
         FromPort: 32768,
         ToPort: 65535,
-        IpRanges: ipAddresses.map((x) => ({
+        IpRanges: ipAddresses.map(x => ({
             CidrIp: `${x}/32`,
             Description: `Allow access from Network Load Balancer`,
         })),
@@ -56,10 +51,12 @@ export const onCreate = async (event: CloudFormationCustomResourceCreateEvent): 
     const loadBalancerArn = event.ResourceProperties.LoadBalancerArn;
     const ipAddresses = await getNLBIpAddresses(loadBalancerArn);
     const ec2 = new AWS.EC2();
-    await ec2.authorizeSecurityGroupIngress({
-        GroupId: securityGroupId,
-        IpPermissions: generateIpPermissions(ipAddresses),
-    }).promise();
+    await ec2
+        .authorizeSecurityGroupIngress({
+            GroupId: securityGroupId,
+            IpPermissions: generateIpPermissions(ipAddresses),
+        })
+        .promise();
     return {
         Status: 'SUCCESS',
         PhysicalResourceId: `${securityGroupId} ${loadBalancerArn}`,
@@ -75,10 +72,12 @@ export const onDelete = async (event: CloudFormationCustomResourceDeleteEvent): 
     const loadBalancerArn = event.ResourceProperties.LoadBalancerArn;
     const ipAddresses = await getNLBIpAddresses(loadBalancerArn);
     const ec2 = new AWS.EC2();
-    await ec2.revokeSecurityGroupIngress({
-        GroupId: securityGroupId,
-        IpPermissions: generateIpPermissions(ipAddresses),
-    }).promise();
+    await ec2
+        .revokeSecurityGroupIngress({
+            GroupId: securityGroupId,
+            IpPermissions: generateIpPermissions(ipAddresses),
+        })
+        .promise();
     return {
         Status: 'SUCCESS',
         RequestId: event.RequestId,

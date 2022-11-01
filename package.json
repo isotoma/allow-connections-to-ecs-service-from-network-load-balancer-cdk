@@ -8,8 +8,8 @@
     "clean": "rm -rf build/",
     "compile": "npm run clean && npm run -- tsc --outDir build/ && (cd provider && npm ci && npm run compile) && cp -R ./provider/build/ ./build/provider/ && cp package.json README.md ./build/",
     "version": "auto-changelog --template ./changelog_template.hbs -p && git add CHANGELOG.md",
-    "lint": "eslint 'index.ts' 'test/**/*.ts' jest.config.js --fix",
-    "lint-check": "eslint 'index.ts' 'test/**/*.ts' jest.config.js --max-warnings 0",
+    "lint": "eslint '*.ts' 'test/**/*.ts' jest.config.js --fix",
+    "lint-check": "eslint '*.ts' 'test/**/*.ts' jest.config.js --max-warnings 0",
     "lint-all": "npm run lint && (cd provider && npm run lint)",
     "lint-check-all": "npm run lint-check && (cd provider && npm run lint-check)"
   },
@@ -30,7 +30,38 @@
     "@aws-cdk/aws-iam": "^1.89.0",
     "@aws-cdk/aws-lambda": "^1.89.0",
     "@aws-cdk/core": "^1.89.0",
-    "@aws-cdk/custom-resources": "^1.89.0"
+    "@aws-cdk/custom-resources": "^1.89.0",
+    "aws-cdk-lib": "^2.0.0",
+    "constructs": "^10.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@aws-cdk/aws-ecs": {
+      "optional": true
+    },
+    "@aws-cdk/aws-elasticloadbalancingv2": {
+      "optional": true
+    },
+    "@aws-cdk/aws-cloudformation": {
+      "optional": true
+    },
+    "@aws-cdk/aws-iam": {
+      "optional": true
+    },
+    "@aws-cdk/aws-lambda": {
+      "optional": true
+    },
+    "@aws-cdk/core": {
+      "optional": true
+    },
+    "@aws-cdk/custom-resources": {
+      "optional": true
+    },
+    "aws-cdk-lib": {
+      "optional": true
+    },
+    "constructs": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@aws-cdk/aws-ecs": "^1.89.0",
@@ -46,6 +77,8 @@
     "@typescript-eslint/eslint-plugin": "4.8.2",
     "@typescript-eslint/parser": "4.8.2",
     "auto-changelog": "^1.16.2",
+    "aws-cdk-lib": "^2.15.0",
+    "constructs": "^10.0.0",
     "eslint": "6.8.0",
     "eslint-config-prettier": "6.9.0",
     "eslint-plugin-prettier": "3.1.2",

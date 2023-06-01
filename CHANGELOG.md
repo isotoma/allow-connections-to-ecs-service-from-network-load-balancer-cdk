@@ -1,5 +1,11 @@
 ### Changelog
 
+### [2.0.0](https://github.com/isotoma/allow-connections-to-ecs-service-from-network-load-balancer-cdk/compare/1.3.0...2.0.0)
+
+> 1 June 2023
+
+- Change index exports to cdkv2 [`#27`](https://github.com/isotoma/allow-connections-to-ecs-service-from-network-load-balancer-cdk/pull/27)
+
 #### [1.3.0](https://github.com/isotoma/allow-connections-to-ecs-service-from-network-load-balancer-cdk/compare/1.2.0...1.3.0)
 
 > 1 November 2022

@@ -1,5 +1,11 @@
 ### Changelog
 
+#### [3.1.0](https://github.com/isotoma/allow-connections-to-ecs-service-from-network-load-balancer-cdk/compare/3.0.0...3.1.0)
+
+> 31 August 2023
+
+- Use Node 16 for the Lambda runtime [`#29`](https://github.com/isotoma/allow-connections-to-ecs-service-from-network-load-balancer-cdk/pull/29)
+
 ### [3.0.0](https://github.com/isotoma/allow-connections-to-ecs-service-from-network-load-balancer-cdk/compare/2.0.0...3.0.0)
 
 > 31 August 2023
